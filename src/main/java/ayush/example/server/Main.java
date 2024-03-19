@@ -27,12 +27,12 @@ public class Main {
 
 //            while (!server.isClosed()) {
 
-                Socket socket = server.accept();
-                DataInputStream input = new DataInputStream(socket.getInputStream());
-                DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+            Socket socket = server.accept();
+            DataInputStream input = new DataInputStream(socket.getInputStream());
+            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
 
-                Thread t = new ClientHandler(input, output, server);
-                t.start();
+            Thread t = new ClientHandler(input, output, server);
+            t.start();
 
 //            }
 
@@ -93,18 +93,15 @@ public class Main {
                 }
 
             } catch (IOException e) {
-                System.out.println("got error");;
+                System.out.println("got error");
+                ;
             } finally {
                 try {
-//                        server.close();
                     output.writeUTF(new Gson().toJson(response));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-//            }
-
-
         }
     }
 
@@ -116,74 +113,36 @@ public class Main {
 
         JsonElement keySet = request.getKey();
 
-//        if (keySet.isJsonPrimitive()) {
-//
-//            try {
-//                String jsonString = new String(Files.readAllBytes(path));
-//                JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-//
-//                jsonObject = new JsonObject();
-//
-//                try (FileWriter writer = new FileWriter(path.toString())) {
-//                    new Gson().toJson(jsonObject, writer);
-//                }
-//
-//                response.setResponse("OK");
-//                return response;
-//
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//        } else {
+        try {
+            String jsonString = new String(Files.readAllBytes(path));
+            JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+            JsonObject originalJsonObject = jsonObject;
+            JsonArray keyArray = keySet.getAsJsonArray();
 
-            try {
-                String jsonString = new String(Files.readAllBytes(path));
-                JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-                JsonObject originalJsonObject = jsonObject;
-                JsonArray keyArray = keySet.getAsJsonArray();
-
-                for (int index = 0; index < keyArray.size() - 1; index++) {
-                    String key = String.valueOf(keyArray.get(index));
-                    key = key.substring(1, key.length() - 1);
-                    if (jsonObject.has(key) && jsonObject.get(key).isJsonObject()) {
-                        jsonObject = jsonObject.get(key).getAsJsonObject();
-                    }
-                }
-
-                String key = String.valueOf(keyArray.get(keyArray.size() - 1));
+            for (int index = 0; index < keyArray.size() - 1; index++) {
+                String key = String.valueOf(keyArray.get(index));
                 key = key.substring(1, key.length() - 1);
-                jsonObject.remove(key);
-
-//                try (FileWriter writer = new FileWriter(path.toString())) {
-//                    new Gson().toJson(originalJsonObject, writer);
-//                }
-
-                response.setResponse("OK");
-                return response;
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                if (jsonObject.has(key) && jsonObject.get(key).isJsonObject()) {
+                    jsonObject = jsonObject.get(key).getAsJsonObject();
+                }
             }
 
-//        }
+            String key = String.valueOf(keyArray.get(keyArray.size() - 1));
+            key = key.substring(1, key.length() - 1);
+            jsonObject.remove(key);
+
+            response.setResponse("OK");
+            return response;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static Response processSetRequest(Request request) {
         Path path = Paths.get("/Users/abarnawal/Maven_Implementation/JSON_Database__Maven_Testing/src/main/java/ayush/example/server/data/db.json");
 
-//        {
-//            "person": {
-//            "name": "Elon Musk",
-//                    "car": {
-//                "model": "Tesla Roadster"
-//            },
-//            "rocket": {
-//                "name": "Falcon 9",
-//                        "launches": "88"
-//            }
-//        }
-//        }
         Response response = new Response();
 
         JsonElement keySet = request.getKey();
@@ -200,10 +159,6 @@ public class Main {
 
                 JsonObject newJsonObject = new JsonObject();
                 newJsonObject.add(key, request.getValue());
-
-//                try (FileWriter writer = new FileWriter(path.toString())) {
-//                    new Gson().toJson(newJsonObject, writer);
-//                }
 
                 response.setResponse("OK");
                 return response;
@@ -232,10 +187,6 @@ public class Main {
                 String key = String.valueOf(keyArray.get(keyArray.size() - 1));
                 key = key.substring(1, key.length() - 1);
                 jsonObject.add(key, request.getValue());
-
-//                try (FileWriter writer = new FileWriter(path.toString())) {
-//                    new Gson().toJson(originalJsonObject, writer);
-//                }
 
                 response.setResponse("OK");
                 return response;
@@ -266,12 +217,11 @@ public class Main {
 
 //                System.out.println(request.getKey() + " " + jsonObject.get(request.getKey().getAsString()));
 
-                if(jsonObject.has(keySet.getAsString())){
+                if (jsonObject.has(keySet.getAsString())) {
                     response.setResponse("OK");
                     response.setValue(jsonObject.get(keySet.getAsString()));
                     return response;
-                }
-                else{
+                } else {
                     response.setResponse("ERROR");
                     response.setReason("No such key");
                     return response;
@@ -321,37 +271,4 @@ public class Main {
         }
     }
 
-//    private static void writeJsonToFile(String json, String filePath) {
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-//            writer.write(json);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private static String readJsonFromFile(String filePath) {
-//        StringBuilder json = new StringBuilder();
-//        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                json.append(line);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return json.toString();
-//    }
-
 }
-
-//-t get -k [ pereson, name ]
-//
-//important
-//post correct naming convention
-//proper identation
-//project structure
-//
-//
-//consider all other exceptions
-//input validation
-////apply stream

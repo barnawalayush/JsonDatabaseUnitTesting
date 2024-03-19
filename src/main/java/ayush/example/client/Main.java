@@ -51,13 +51,10 @@ public class Main {
                 request = new Request(typeOfOperation, key, value);
             } else {
                 String content = new String(Files.readAllBytes(Paths.get("/Users/abarnawal/Maven_Implementation/JSON_Database__Maven_Testing/src/main/java/ayush/example/client/data/" + fileName)));
-//                System.out.println(content);
                 request = new Gson().fromJson(content, Request.class);
-//                System.out.println(request.getKey() + " " + request.getValue());
             }
 
             String sendMessage = new Gson().toJson(request);
-//            System.out.println(sendMessage);
             output.writeUTF(sendMessage);
             System.out.println("Sent: " + sendMessage);
 
@@ -66,7 +63,8 @@ public class Main {
             fileName = null;
 
         } catch (IOException e) {
-            System.out.println("got error");;
+            System.out.println("got error");
+            ;
         }
 
     }

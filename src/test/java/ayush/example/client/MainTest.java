@@ -20,22 +20,19 @@ class MainTest {
     }
 
     @Test
-    void mainWithGetOperation() {
+    void testMainWithGetOperation() {
 
-        String typeOfOperation = "get";
-        String key = "1";
-
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             ayush.example.server.Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        Main.main(new String[]{"-t", "get", "-k",  "1"});
+        Main.main(new String[]{"-t", "get", "-k", "1"});
 
         assertEquals("Server started!\n" +
                 "Client started!\n" +
@@ -45,14 +42,14 @@ class MainTest {
     }
 
     @Test
-    void mainWithFile(){
+    void testMainWithFile() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             ayush.example.server.Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -66,13 +63,13 @@ class MainTest {
     }
 
     @Test
-    void mainWIthException(){
-        Thread t = new Thread(() -> {
+    void testMainWIthException() {
+        Thread serverThread = new Thread(() -> {
             ayush.example.server.Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -82,7 +79,6 @@ class MainTest {
         assertEquals("Server started!\n" +
                 "Client started!\n" +
                 "got error\n", outputStream.toString());
-//        assertThrows(RuntimeException.class, () -> Main.main(new String[]{"-in", "dummyFile.json"}));
     }
 
 }

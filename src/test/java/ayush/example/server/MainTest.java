@@ -15,21 +15,21 @@ class MainTest {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         System.setOut(new PrintStream(outputStream));
     }
 
     @Test
     @Order(1)
-    void aGetRequestWithWrongKey() {
+    void testGetRequestWithWrongKey() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
 
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -44,15 +44,15 @@ class MainTest {
 
     @Test
     @Order(2)
-    void bGetRequestWithCorrectPrimitiveKey() {
+    void testGetRequestWithCorrectPrimitiveKey() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
 
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -67,15 +67,15 @@ class MainTest {
 
     @Test
     @Order(3)
-    void cGetRequestWithCorrectNonPrimitiveKey() {
+    void testGetRequestWithCorrectNonPrimitiveKey() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
 
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -90,15 +90,15 @@ class MainTest {
 
     @Test
     @Order(4)
-    void dSetRequestWithPrimitiveKey(){
+    void testSetRequestWithPrimitiveKey() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
 
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -113,15 +113,15 @@ class MainTest {
 
     @Test
     @Order(5)
-    void eSetRequestWithNonPrimitiveKey(){
+    void testSetRequestWithNonPrimitiveKey() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
 
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -134,16 +134,17 @@ class MainTest {
                 "Received: {\"response\":\"OK\"}\n", outputStream.toString());
     }
 
-    @Test@Order(6)
-    void fDeleteRequest() {
+    @Test
+    @Order(6)
+    void testDeleteRequest() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
 
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -158,15 +159,15 @@ class MainTest {
 
     @Test
     @Order(7)
-    void exitRequest(){
+    void testExitRequest() {
 
-        Thread t = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             Main.main(new String[]{});
         });
-        t.start();
+        serverThread.start();
 
         try {
-            t.join(1L);
+            serverThread.join(1L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
